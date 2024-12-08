@@ -9,14 +9,40 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="96x96" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
     <script>
-        function sendEmail(e) {
-            var name = e.values[0];
-            var email = e.values[1];
-            var message = e.values[2];
-            GmailApp.sendEmail("recipient@example.com", `Message from ${name}`, message, {from: email});
-        }
-        
+        document.getElementById('contactForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Collect form data
+            const formData = new FormData(event.target);
+
+            // Convert to a format suitable for the API (JSON)
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            try {
+                // Send the data to the API
+                const response = await fetch("https://script.google.com/macros/s/AKfycbzFU059GLLHYQf827zvu3UrwMhBRc1r6JF9jHsHqaUInr4W-Q24kuqnK4vgLbaEJ9yB/exec", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("Email sent successfully!");
+                } else {
+                    alert("Failed to send email. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred. Please check your network and try again.");
+            }
+        });
     </script>
 
 </head>
@@ -97,7 +123,7 @@
 
 <div class="container mx-auto my-10 p-6 bg-gray-100 shadow-lg rounded-lg animate-fadeIn">
     <h2 class="text-center text-2xl font-bold text-orange-500 mb-4">Get in Touch</h2>
-    <form action="#" method="post" class="space-y-6 ">
+    <form id="contactForm" class="space-y-6 ">
         <div class="form-group">
             <label for="name" class="block text-left font-bold mb-2">Name</label>
             <input
