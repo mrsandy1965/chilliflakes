@@ -8,6 +8,17 @@
 
     <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="96x96" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        function sendEmail(e) {
+            var name = e.values[0];
+            var email = e.values[1];
+            var message = e.values[2];
+            GmailApp.sendEmail("recipient@example.com", `Message from ${name}`, message, {from: email});
+        }
+        
+    </script>
+
 </head>
 <body class="">
     <div id="top">
